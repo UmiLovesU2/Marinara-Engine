@@ -5394,7 +5394,7 @@ function AppearanceSettings({ group = "app" }: { group?: AppearanceGroup }) {
                 <p className="mb-3 text-xs leading-relaxed text-[var(--muted-foreground)]">
                   {localizeUi("settings.controls.chatWidgetStyle.help")}
                 </p>
-                <div className="grid grid-cols-1 gap-2 @min-[34rem]:grid-cols-3">
+                <div className="grid grid-cols-1 gap-2 @min-[34rem]:grid-cols-2">
                   {(
                     [
                       {
@@ -5412,6 +5412,13 @@ function AppearanceSettings({ group = "app" }: { group?: AppearanceGroup }) {
                         labelKey: "settings.controls.chatWidgetStyle.mari",
                         descriptionKey: "settings.controls.chatWidgetStyle.mariDescription",
                       },
+                      {
+                        id: "phantom",
+                        labelKey: "settings.controls.chatWidgetStyle.phantom",
+                        descriptionKey: "settings.controls.chatWidgetStyle.phantomDescription",
+                        defaultLabel: "Phantom",
+                        defaultDescription: "Tilted charcoal slab, white title band, red accents and a dagger crest.",
+                      },
                     ] as const
                   ).map((preset) => {
                     const selected = chatWidgetPreset === preset.id;
@@ -5421,7 +5428,9 @@ function AppearanceSettings({ group = "app" }: { group?: AppearanceGroup }) {
                         key={preset.id}
                         type="button"
                         data-chat-widget-preset-option={preset.id}
-                        aria-label={localizeUi(preset.labelKey)}
+                        aria-label={localizeUi(preset.labelKey, {
+                          defaultValue: "defaultLabel" in preset ? preset.defaultLabel : undefined,
+                        })}
                         aria-describedby={descriptionId}
                         aria-pressed={selected}
                         onClick={() => setChatWidgetPreset(preset.id)}
@@ -5433,7 +5442,9 @@ function AppearanceSettings({ group = "app" }: { group?: AppearanceGroup }) {
                         )}
                       >
                         <span className="flex items-center justify-between gap-1 font-semibold">
-                          {localizeUi(preset.labelKey)}
+                          {localizeUi(preset.labelKey, {
+                            defaultValue: "defaultLabel" in preset ? preset.defaultLabel : undefined,
+                          })}
                           {selected && <Check size="0.75rem" aria-hidden="true" className="shrink-0" />}
                         </span>
                         <ChatWidgetStylePreview
@@ -5454,7 +5465,9 @@ function AppearanceSettings({ group = "app" }: { group?: AppearanceGroup }) {
                           id={descriptionId}
                           className="text-[0.6875rem] leading-relaxed text-[var(--muted-foreground)]"
                         >
-                          {localizeUi(preset.descriptionKey)}
+                          {localizeUi(preset.descriptionKey, {
+                            defaultValue: "defaultDescription" in preset ? preset.defaultDescription : undefined,
+                          })}
                         </span>
                       </button>
                     );
@@ -5506,6 +5519,9 @@ function AppearanceSettings({ group = "app" }: { group?: AppearanceGroup }) {
                       <option value="square">{localizeUi("settings.controls.chatWidgetShape.square")}</option>
                       <option value="cut-corner">{localizeUi("settings.controls.chatWidgetShape.cutCorner")}</option>
                       <option value="arched">{localizeUi("settings.controls.chatWidgetShape.arched")}</option>
+                      <option value="slanted">
+                        {localizeUi("settings.controls.chatWidgetShape.slanted", { defaultValue: "Slanted" })}
+                      </option>
                     </select>
                   </label>
                 </div>

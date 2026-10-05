@@ -69,15 +69,21 @@ function normalizeConnectionPanelSort(value: unknown): ConnectionPanelSort {
 }
 type FontSize = 12 | 14 | 16 | 17 | 19 | 22 | 26 | 30 | 34;
 export type VisualTheme = "default" | "sillytavern";
-export type ChatWidgetPreset = "default" | "dottore" | "mari";
-export type ChatWidgetShape = "preset" | "rounded" | "square" | "cut-corner" | "arched";
+export type ChatWidgetPreset = "default" | "dottore" | "mari" | "phantom";
+export type ChatWidgetShape = "preset" | "rounded" | "square" | "cut-corner" | "arched" | "slanted";
 
 export function normalizeChatWidgetPreset(value: unknown): ChatWidgetPreset {
-  return value === "dottore" || value === "mari" ? value : "default";
+  return value === "dottore" || value === "mari" || value === "phantom" ? value : "default";
 }
 
 export function normalizeChatWidgetShape(value: unknown): ChatWidgetShape {
-  return value === "rounded" || value === "square" || value === "cut-corner" || value === "arched" ? value : "preset";
+  return value === "rounded" ||
+    value === "square" ||
+    value === "cut-corner" ||
+    value === "arched" ||
+    value === "slanted"
+    ? value
+    : "preset";
 }
 
 /** No override preserves the existing desktop, phone and custom-theme sizes. */

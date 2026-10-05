@@ -1061,7 +1061,9 @@ export function App() {
           ? "cut-corner"
           : chatWidgetPreset === "mari"
             ? "arched"
-            : null;
+            : chatWidgetPreset === "phantom"
+              ? "slanted"
+              : null;
     if (shape) root.dataset.chatWidgetShape = shape;
     else delete root.dataset.chatWidgetShape;
     const font = getChatWidgetFontFamily(chatWidgetFont);

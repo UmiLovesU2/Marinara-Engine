@@ -57,6 +57,7 @@
   --mari-widget-filter: initial;
   --mari-widget-header-padding: initial;
   --mari-widget-crest-height: initial;
+  --mari-widget-header-ink: initial;
 }
 
 [data-chat-widget-preset="dottore"] {
@@ -145,6 +146,53 @@
   --mari-widget-border: oklch(0.475 0.04 265);
   --mari-widget-gold: oklch(0.76 0.073 80);
   --mari-widget-soft: oklch(0.335 0.045 273);
+}
+
+/* Persona 5 style callout: pale or charcoal slab, contrasting title band, red accents. */
+[data-chat-widget-preset="phantom"] {
+  --mari-widget-bg: oklch(0.18 0.004 20);
+  --mari-widget-text: oklch(0.96 0 0);
+  --mari-widget-accent: oklch(0.62 0.22 27);
+  --mari-widget-muted: oklch(0.75 0.01 20);
+  --mari-widget-field: oklch(18.911% 0.00325 17.082 / 0);
+  --mari-widget-border: oklch(54.898% 0.00997 17.118 / 0);
+  --mari-widget-gold: oklch(0.97 0 0);
+  --mari-widget-soft: oklch(0.32 0.06 25);
+  --mari-widget-font-preset: "Franklin Gothic Medium", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --mari-widget-header-ink: oklch(0.96 0 0);
+  --mari-widget-header-bg: oklch(0.18 0.004 20);
+  --mari-widget-header-padding: 0.75rem 1.75rem;
+  --mari-widget-crest-height: 7rem;
+  --mari-widget-crest: url("/images/chat-widgets/phantom-dagger.png");
+  --mari-widget-crest-content: "";
+}
+
+.mari-window[data-chat-widget-preset="phantom"] {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  --mari-widget-ornament-content: "";
+  --mari-widget-isolation: isolate;
+  --mari-widget-drawer-margin: 0 0.625rem;
+  --mari-widget-body-inset: 0 0.375rem 0.375rem;
+  --mari-widget-drawer-border-width: 1px;
+  --mari-widget-drawer-radius: 0px;
+  --mari-widget-frame-shadow:
+    inset 0 0 0 3px var(--mari-widget-custom-background-solid, var(--mari-widget-bg)),
+    inset 0 0 0 4px var(--mari-widget-custom-border-solid, var(--mari-widget-gold));
+}
+
+[data-theme="dark"][data-chat-widget-preset="phantom"],
+[data-theme="dark"] [data-chat-widget-preset="phantom"] {
+  --mari-widget-bg: oklch(0.19 0.004 20);
+  --mari-widget-text: oklch(0.96 0 0);
+  --mari-widget-accent: oklch(0.62 0.22 27);
+  --mari-widget-muted: oklch(0.75 0.01 20);
+  --mari-widget-field: oklch(19.034% 0.0049 17.349 / 0);
+  --mari-widget-border: oklch(54.898% 0.00997 17.118 / 0);
+  --mari-widget-gold: oklch(0.97 0 0);
+  --mari-widget-soft: oklch(0.35 0.06 25);
+  --mari-widget-header-ink: oklch(0.96 0 0);
+  --mari-widget-header-bg: oklch(0.19 0.004 20);
 }
 
 [data-chat-widget-shape="rounded"] {
@@ -245,6 +293,55 @@
     inset 0 0 0 3px var(--mari-widget-custom-border-solid, var(--mari-widget-border, var(--border)));
 }
 
+/* Tilted slab: sloped top edge, angled bottom-right cut, slanted buttons. */
+[data-chat-widget-shape="slanted"],
+[data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"] {
+  --mari-widget-radius: 0px;
+  --mari-widget-bubble-radius: 0px;
+  --mari-widget-shell-bg: transparent;
+  --mari-widget-shell-backdrop-filter: none;
+  --mari-widget-header-shell-bg: transparent;
+  --mari-widget-shadow: none;
+  /* Hard offset shadow in the preset accent, like the P5 callouts. Static so it warps with the window. */
+  --mari-widget-filter: drop-shadow(6px 6px 0 var(--mari-widget-accent, rgb(0 0 0 / 0.35)));
+  --mari-widget-shell-border: transparent;
+  --mari-widget-frame-content: "";
+  --mari-widget-isolation: isolate;
+  --mari-widget-frame-clip: polygon(
+    0 10px,
+    100% 0,
+    100% calc(100% - 26px),
+    calc(100% - 26px) 100%,
+    0 calc(100% - 6px)
+  );
+  --mari-widget-frame-inner-clip: polygon(
+    0 9px,
+    100% 0,
+    100% calc(100% - 25px),
+    calc(100% - 25px) 100%,
+    0 calc(100% - 5px)
+  );
+  --mari-widget-frame-inset: 2px;
+  --mari-widget-button-clip: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  --mari-widget-button-inner-clip: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+  --mari-widget-button-shell: transparent;
+  /* The fill is a clipped plate inset 1px from the clipped host, so the host's
+     background shows as an outline that follows the slant. No rectangular
+     border or inset box-shadow, which is what drew the square inside. */
+  --mari-widget-ornament-content: "";
+  --mari-widget-ornament-inset: 1px;
+  --mari-widget-ornament-border: 0 none;
+  --mari-widget-ornament-z: -1;
+  --mari-widget-ornament-bg: var(
+    --mari-window-bubble-bg,
+    var(
+      --mari-widget-custom-background,
+      var(--mari-widget-custom-background-solid, var(--mari-widget-bg, var(--marinara-chat-chrome-button-bg)))
+    )
+  );
+  --mari-widget-ornament-shadow: none;
+}
+
 @layer components {
   .mari-window,
   .mari-drawer-ghost {
@@ -286,11 +383,18 @@
 
   /* Resolve the public blur hook at the painted element so per-window themes
      work too. Rounded frames keep their original single blur on the root. */
-  :root:is([data-chat-widget-shape="cut-corner"], [data-chat-widget-preset="dottore"][data-chat-widget-shape="preset"])
+  :root:is(
+      [data-chat-widget-shape="cut-corner"],
+      [data-chat-widget-shape="slanted"],
+      [data-chat-widget-preset="dottore"][data-chat-widget-shape="preset"],
+      [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"]
+    )
     .mari-window:not([data-chat-widget-preview] *)::after,
   [data-chat-widget-preview]:is(
       [data-chat-widget-shape="cut-corner"],
-      [data-chat-widget-preset="dottore"][data-chat-widget-shape="preset"]
+      [data-chat-widget-shape="slanted"],
+      [data-chat-widget-preset="dottore"][data-chat-widget-shape="preset"],
+      [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"]
     )
     .mari-window::after {
     -webkit-backdrop-filter: var(--mari-window-backdrop-filter, blur(12px));
@@ -323,7 +427,7 @@
     width: 2rem;
     height: var(--mari-widget-crest-height, 2rem);
     left: calc(50% - 1rem);
-    top: calc(var(--mari-widget-crest-height, 2rem) * -0.55);
+    top: 0.5rem;
     background: var(--mari-window-ornament, var(--mari-widget-crest)) center / contain no-repeat;
     pointer-events: none;
   }
@@ -460,6 +564,24 @@
     clip-path: var(--mari-widget-button-inner-clip, none);
   }
 
+  /* Slanted buttons: clip the host element too, not just the paint layers. */
+  :root:is([data-chat-widget-shape="slanted"], [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"])
+    .mari-window-bubble:not([data-chat-widget-preview] *):not(.mari-chat-tools-button, [data-chat-tools-menu-button]),
+  [data-chat-widget-preview]:is(
+      [data-chat-widget-shape="slanted"],
+      [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"]
+    )
+    .mari-window-bubble:not(.mari-chat-tools-button, [data-chat-tools-menu-button]) {
+    clip-path: var(--mari-widget-button-clip, none);
+    /* The clipped host paints the slanted outline behind the inset fill plate. */
+    border-color: transparent;
+    box-shadow: none;
+    background: var(
+      --mari-window-bubble-border,
+      var(--mari-widget-custom-border-solid, var(--mari-widget-border, var(--border)))
+    );
+  }
+
   @media (hover: hover) {
     .mari-window-bubble:hover > .mari-window-bubble__paint::after {
       background: var(
@@ -566,7 +688,8 @@
   }
 
   [data-chat-widget-preview][data-chat-widget-preset="dottore"] .mari-widget-style-preview__window,
-  [data-chat-widget-preview][data-chat-widget-preset="mari"] .mari-widget-style-preview__window {
+  [data-chat-widget-preview][data-chat-widget-preset="mari"] .mari-widget-style-preview__window,
+  [data-chat-widget-preview][data-chat-widget-preset="phantom"] .mari-widget-style-preview__window {
     --mari-window-header-padding: 0.625rem 1rem;
   }
 
@@ -575,6 +698,34 @@
     height: 1.5rem;
     left: calc(50% - 0.5rem);
     top: -0.875rem;
+  }
+
+  /* Phantom title band: contrasting ink unless the user set custom text colors. */
+  :root[data-chat-widget-preset="phantom"]:not([data-chat-widget-colors~="text"])
+    .mari-window__header:not([data-chat-widget-preview] *),
+  [data-chat-widget-preview][data-chat-widget-preset="phantom"]:not([data-chat-widget-colors~="text"])
+    .mari-window__header {
+    color: var(--mari-widget-header-ink, inherit);
+  }
+
+  :root[data-chat-widget-preset="phantom"] .mari-window__title-row:not([data-chat-widget-preview] *),
+  [data-chat-widget-preview][data-chat-widget-preset="phantom"] .mari-window__title-row {
+    font-family: var(--mari-window-font-family, var(--mari-widget-font-override, "Arial Black", Impact, sans-serif));
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* Move the jagged flash to the top-right corner on floating windows. */
+  :root[data-chat-widget-preset="phantom"]
+    .mari-window:not([data-presentation="sheet"], [data-presentation="menu"]):not([data-chat-widget-preview] *)
+    .mari-window__header::after,
+  [data-chat-widget-preview][data-chat-widget-preset="phantom"]
+    .mari-window:not([data-presentation="sheet"], [data-presentation="menu"])
+    .mari-window__header::after {
+    left: auto;
+    right: -0.75rem;
+    top: -2.5rem;
+    transform: rotate(16deg);
   }
 }
 
@@ -624,6 +775,71 @@
     --mari-window-control-color,
     var(--mari-widget-custom-border-solid, var(--mari-widget-accent, var(--marinara-chat-chrome-accent)))
   );
+}
+
+/* Phantom warp: the painted slab and its red offset shadow drift slowly on
+   separate timings, like the P5R callouts. Only paint layers transform, so
+   text, controls and hit targets stay still. Windows get staggered delays. */
+@keyframes phantom-slab-warp {
+  0%,
+  100% {
+    transform: skew(-0.6deg, -0.3deg) scale(1.004, 0.998);
+  }
+  50% {
+    transform: skew(0.3deg, 0.5deg) scale(0.997, 1.003);
+  }
+}
+
+
+
+
+
+.mari-window:nth-of-type(2n) {
+  --phantom-warp-delay: -2.1s;
+}
+
+.mari-window:nth-of-type(3n) {
+  --phantom-warp-delay: -3.7s;
+}
+
+:root:is([data-chat-widget-shape="slanted"], [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"])
+  .mari-window:not([data-chat-widget-preview] *)
+  .mari-window__header::before,
+[data-chat-widget-preview]:is(
+    [data-chat-widget-shape="slanted"],
+    [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"]
+  )
+  .mari-window {
+  transform-origin: 50% 50%;
+  animation: phantom-slab-warp 5.5s ease-in-out var(--phantom-warp-delay, 0s) infinite alternate;
+}
+
+/* Pseudo-elements can't sit inside :is(), so the frame layers get their own rule. */
+:root:is([data-chat-widget-shape="slanted"], [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"])
+  .mari-window:not([data-chat-widget-preview] *)::before,
+:root:is([data-chat-widget-shape="slanted"], [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"])
+  .mari-window:not([data-chat-widget-preview] *)::after,
+[data-chat-widget-preview]:is(
+    [data-chat-widget-shape="slanted"],
+    [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"]
+  )
+  .mari-window::before,
+[data-chat-widget-preview]:is(
+    [data-chat-widget-shape="slanted"],
+    [data-chat-widget-preset="phantom"][data-chat-widget-shape="preset"]
+  )
+  .mari-window::after {
+  transform-origin: 50% 50%;
+  animation: phantom-slab-warp 5.5s ease-in-out var(--phantom-warp-delay, 0s) infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mari-window,
+  .mari-window::before,
+  .mari-window::after,
+  .mari-window .mari-window__header::before {
+    animation: none !important;
+  }
 }
 
 /* Mobile Chat tools rolls out a column of round buttons. Keep the chosen
